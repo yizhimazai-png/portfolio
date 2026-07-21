@@ -3,25 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jack -- 3D Creator</title>
-  
-  <!-- 1. Google Fonts: Kanit -->
+  <title>MA ZIYU -- Portfolio</title>
+
+  <!-- 引入极简高质感字体 Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet">
-  
-  <!-- 2. Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- 3. React & ReactDOM CDN -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  
-  <!-- 4. Babel CDN (用于在浏览器中实时解析 JSX) -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.min.js"></script>
-  
-  <!-- 5. Framer Motion CDN -->
-  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
     * {
@@ -29,258 +16,153 @@
       margin: 0;
       padding: 0;
     }
-    html, body, #root {
-      background-color: #0C0C0C;
-      color: #D7E2EA;
-      font-family: 'Kanit', sans-serif;
-      overflow-x: clip;
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      background-color: #121212;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      color: #FFFFFF;
     }
-    /* 渐变标题样式 */
-    .hero-heading {
-      background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+
+    /* 1. 封面容器：使用你上传的 hero-bg.webp 图片 */
+    .hero-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      /* 这里改成了你上传的图片路径 images/hero-bg.webp */
+      background: #1e1e20 url('./images/hero-bg.webp') center/cover no-repeat;
+    }
+
+    /* 2. 磨砂玻璃层 */
+    .frosted-glass {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 3. 核心内容区域 */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      
+      /* 初始状态：深陷在雾玻璃背后（高模糊、低透明度、缩小） */
+      opacity: 0;
+      filter: blur(16px);
+      transform: scale(0.96) translateY(10px);
+      
+      /* 关键动画：2秒内缓缓浮现 */
+      animation: emergeFromFrost 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: 0.3s;
+    }
+
+    /* 4. “磨砂中浮现”动画定义 */
+    @keyframes emergeFromFrost {
+      0% {
+        opacity: 0;
+        filter: blur(16px);
+        transform: scale(0.96) translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        filter: blur(0px);
+        transform: scale(1) translateY(0px);
+      }
+    }
+
+    /* 主标题样式：Portfolio | MA ZIYU */
+    .title-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .main-title {
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      color: rgba(255, 255, 255, 0.95);
+      line-height: 1;
+    }
+
+    .divider {
+      width: 2px;
+      height: clamp(3rem, 6vw, 5.5rem);
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .sub-title {
+      font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: rgba(255, 255, 255, 0.85);
+      text-transform: uppercase;
+      margin-top: 1.8rem;
+    }
+
+    /* 底部邮箱地址 */
+    .email-wrapper {
+      position: absolute;
+      bottom: 40px;
+      z-index: 2;
+      font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.7);
+      
+      /* 邮箱延迟出现 */
+      opacity: 0;
+      filter: blur(10px);
+      animation: emergeFromFrost 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: 1.1s;
+    }
+
+    .email-wrapper a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.3s ease, opacity 0.3s ease;
+    }
+
+    .email-wrapper a:hover {
+      color: #ffffff;
+      opacity: 1;
     }
   </style>
 </head>
 <body>
-  <div id="root"></div>
 
-  <!-- React 页面逻辑脚本 -->
-  <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
-    const { motion, useScroll, useTransform } = Motion;
+  <!-- 封面主体 Section -->
+  <section class="hero-container">
+    <!-- 磨砂玻璃图层 -->
+    <div class="frosted-glass"></div>
 
-    // --- 1. Reusable Magnet Component ---
-    const Magnet = ({ children, padding = 150, strength = 3 }) => {
-      const [transform, setTransform] = useState("translate3d(0px, 0px, 0px)");
-      const [transition, setTransition] = useState("transform 0.6s ease-in-out");
-      const ref = useRef(null);
+    <!-- 隔着玻璃浮现的主文字内容 -->
+    <div class="hero-content">
+      <div class="title-wrapper">
+        <h1 class="main-title">Portfolio</h1>
+        <div class="divider"></div>
+      </div>
+      <p class="sub-title">MA ZIYU</p>
+    </div>
 
-      useEffect(() => {
-        const handleMouseMove = (e) => {
-          if (!ref.current) return;
-          const rect = ref.current.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
-          const distanceX = e.clientX - centerX;
-          const distanceY = e.clientY - centerY;
+    <!-- 底部邮箱 -->
+    <div class="email-wrapper">
+      <a href="mailto:maziyumia@foxmail.com">&lt;maziyumia@foxmail.com&gt;</a>
+    </div>
+  </section>
 
-          if (
-            Math.abs(distanceX) < rect.width / 2 + padding &&
-            Math.abs(distanceY) < rect.height / 2 + padding
-          ) {
-            setTransition("transform 0.3s ease-out");
-            setTransform(`translate3d(${distanceX / strength}px, ${distanceY / strength}px, 0px)`);
-          } else {
-            setTransition("transform 0.6s ease-in-out");
-            setTransform("translate3d(0px, 0px, 0px)");
-          }
-        };
-
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-      }, [padding, strength]);
-
-      return (
-        <div ref={ref} style={{ transform, transition, willChange: "transform" }}>
-          {children}
-        </div>
-      );
-    };
-
-    // --- 2. Reusable FadeIn Component ---
-    const FadeIn = ({ children, delay = 0, duration = 0.7, x = 0, y = 30, className = "" }) => {
-      return (
-        <motion.div
-          initial={{ opacity: 0, x, y }}
-          whileInView={{ opacity: 1, x: 0, y: 0 }}
-          viewport={{ once: true, margin: "50px" }}
-          transition={{ duration, delay, ease: [0.25, 0.1, 0.25, 1] }}
-          className={className}
-        >
-          {children}
-        </motion.div>
-      );
-    };
-
-    // --- 3. Buttons ---
-    const ContactButton = ({ className = "" }) => (
-      <button
-        className={`rounded-full font-medium uppercase tracking-widest text-white transition-all duration-300 hover:scale-105 active:scale-95 ${className}`}
-        style={{
-          background: "linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%)",
-          boxShadow: "0px 4px 4px rgba(181, 1, 167, 0.25), 4px 4px 12px #7721B1 inset",
-          outline: "2px solid white",
-          outlineOffset: "-3px"
-        }}
-      >
-        Contact Me
-      </button>
-    );
-
-    const LiveProjectButton = ({ className = "" }) => (
-      <button className={`rounded-full border-2 border-[#D7E2EA] text-[#D7E2EA] font-medium uppercase tracking-widest hover:bg-[#D7E2EA]/10 transition-all duration-200 ${className}`}>
-        Live Project
-      </button>
-    );
-
-    // --- 4. Hero Section ---
-    const HeroSection = () => (
-      <section className="relative h-screen w-full flex flex-col justify-between overflow-x-clip bg-[#0C0C0C] text-[#D7E2EA]">
-        <FadeIn y={-20} delay={0} className="w-full">
-          <nav className="flex justify-between items-center px-6 md:px-10 pt-6 md:pt-8 text-sm md:text-lg lg:text-[1.4rem] font-medium uppercase tracking-wider">
-            <a href="#about" className="hover:opacity-70 transition-opacity">About</a>
-            <a href="#services" className="hover:opacity-70 transition-opacity">Price</a>
-            <a href="#projects" className="hover:opacity-70 transition-opacity">Projects</a>
-            <a href="#contact" className="hover:opacity-70 transition-opacity">Contact</a>
-          </nav>
-        </FadeIn>
-
-        <div className="relative z-0 flex flex-col items-center justify-center flex-grow overflow-hidden">
-          <FadeIn y={40} delay={0.15} className="w-full text-center">
-            <h1 className="hero-heading font-black uppercase tracking-tight leading-none whitespace-nowrap w-full text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw] mt-6 sm:mt-4 md:-mt-5 select-none">
-              Hi, i&apos;m jack
-            </h1>
-          </FadeIn>
-        </div>
-
-        <div className="absolute left-1/2 -translate-x-1/2 z-10 w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px] top-1/2 -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0">
-          <FadeIn y={30} delay={0.6}>
-            <Magnet padding={150} strength={3}>
-              <img
-                src="https://shrug-person-78902957.figma.site/_components/v2/d24c01ad3a56fc65e942a1f501eb73db42d7cf9a/Rectangle_40443.81459862.png"
-                alt="Jack 3D Portrait"
-                className="w-full h-auto object-contain drop-shadow-2xl select-none"
-              />
-            </Magnet>
-          </FadeIn>
-        </div>
-
-        <div className="relative z-20 flex justify-between items-end px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 w-full">
-          <FadeIn y={20} delay={0.35}>
-            <p className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug max-w-[160px] sm:max-w-[220px] md:max-w-[260px] text-[clamp(0.75rem,1.4vw,1.5rem)]">
-              a 3d creator driven by crafting striking and unforgettable projects
-            </p>
-          </FadeIn>
-
-          <FadeIn y={20} delay={0.5}>
-            <ContactButton className="px-8 py-3 sm:px-10 sm:py-3.5 md:px-12 md:py-4 text-xs sm:text-sm md:text-base" />
-          </FadeIn>
-        </div>
-      </section>
-    );
-
-    // --- 5. Marquee Section ---
-    const marqueeGifs = [
-      "https://motionsites.ai/assets/hero-space-voyage-preview-eECLH3Yc.gif",
-      "https://motionsites.ai/assets/hero-codenest-preview-Cgppc2qV.gif",
-      "https://motionsites.ai/assets/hero-vex-ventures-preview-BczMFIiw.gif",
-      "https://motionsites.ai/assets/hero-stellar-ai-v2-preview-DjvxjG3C.gif",
-      "https://motionsites.ai/assets/hero-asme-preview-B_nGDnTP.gif",
-      "https://motionsites.ai/assets/hero-transform-data-preview-Cx5OU29N.gif",
-      "https://motionsites.ai/assets/hero-vitara-preview-Cjz2QYyU.gif",
-      "https://motionsites.ai/assets/hero-terra-preview-BFjrCr7T.gif",
-      "https://motionsites.ai/assets/hero-skyelite-preview-DHaZIgUv.gif",
-      "https://motionsites.ai/assets/hero-aethera-preview-DknSlcTa.gif",
-      "https://motionsites.ai/assets/hero-designpro-preview-D8c5_een.gif",
-      "https://motionsites.ai/assets/hero-stellar-ai-preview-D3HL6bw1.gif",
-      "https://motionsites.ai/assets/hero-xportfolio-preview-D4A8maiC.gif",
-      "https://motionsites.ai/assets/hero-orbit-web3-preview-BXt4OttD.gif",
-      "https://motionsites.ai/assets/hero-nexora-preview-cx5HmUgo.gif",
-      "https://motionsites.ai/assets/hero-evr-ventures-preview-DZxeVFEX.gif",
-      "https://motionsites.ai/assets/hero-planet-orbit-preview-DWAP8Z1P.gif",
-      "https://motionsites.ai/assets/hero-new-era-preview-CocuDUm9.gif",
-      "https://motionsites.ai/assets/hero-wealth-preview-B70idl_u.gif",
-      "https://motionsites.ai/assets/hero-luminex-preview-CxOP7ce6.gif",
-      "https://motionsites.ai/assets/hero-celestia-preview-0yO3jXO8.gif"
-    ];
-
-    const MarqueeSection = () => {
-      const [scrollOffset, setScrollOffset] = useState(0);
-      const sectionRef = useRef(null);
-
-      useEffect(() => {
-        const handleScroll = () => {
-          if (!sectionRef.current) return;
-          const rect = sectionRef.current.getBoundingClientRect();
-          const offset = (window.scrollY - (rect.top + window.scrollY) + window.innerHeight) * 0.3;
-          setScrollOffset(offset);
-        };
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => window.removeEventListener("scroll", handleScroll);
-      }, []);
-
-      const row1 = [...marqueeGifs.slice(0, 11), ...marqueeGifs.slice(0, 11)];
-      const row2 = [...marqueeGifs.slice(11), ...marqueeGifs.slice(11)];
-
-      return (
-        <section ref={sectionRef} className="bg-[#0C0C0C] pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden w-full">
-          <div className="flex flex-col gap-3">
-            <div className="flex gap-3 w-max" style={{ transform: `translateX(${scrollOffset - 200}px)`, willChange: "transform" }}>
-              {row1.map((src, idx) => (
-                <div key={`r1-${idx}`} className="w-[300px] sm:w-[380px] md:w-[420px] h-[190px] sm:h-[240px] md:h-[270px] rounded-2xl overflow-hidden flex-shrink-0 bg-neutral-900">
-                  <img src={src} alt="3D Preview" loading="lazy" className="w-full h-full object-cover" />
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-3 w-max" style={{ transform: `translateX(${-(scrollOffset - 200)}px)`, willChange: "transform" }}>
-              {row2.map((src, idx) => (
-                <div key={`r2-${idx}`} className="w-[300px] sm:w-[380px] md:w-[420px] h-[190px] sm:h-[240px] md:h-[270px] rounded-2xl overflow-hidden flex-shrink-0 bg-neutral-900">
-                  <img src={src} alt="3D Preview" loading="lazy" className="w-full h-full object-cover" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      );
-    };
-
-    // --- 6. About Section ---
-    const AboutSection = () => (
-      <section id="about" className="relative min-h-screen bg-[#0C0C0C] text-[#D7E2EA] px-5 sm:px-8 md:px-10 py-20 flex flex-col items-center justify-center overflow-hidden">
-        <FadeIn delay={0.1} x={-80} y={0} duration={0.9} className="absolute top-[4%] left-[1%] sm:left-[2%] md:left-[4%] z-10">
-          <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/moon_icon.11395d36.png" className="w-[120px] sm:w-[160px] md:w-[210px] h-auto pointer-events-none" />
-        </FadeIn>
-
-        <FadeIn delay={0.25} x={-80} y={0} duration={0.9} className="absolute bottom-[8%] left-[3%] sm:left-[6%] md:left-[10%] z-10">
-          <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/p59_1.4659672e.png" className="w-[100px] sm:w-[140px] md:w-[180px] h-auto pointer-events-none" />
-        </FadeIn>
-
-        <FadeIn delay={0.15} x={80} y={0} duration={0.9} className="absolute top-[4%] right-[1%] sm:right-[2%] md:right-[4%] z-10">
-          <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/lego_icon-1.703bb594.png" className="w-[120px] sm:w-[160px] md:w-[210px] h-auto pointer-events-none" />
-        </FadeIn>
-
-        <FadeIn delay={0.3} x={80} y={0} duration={0.9} className="absolute bottom-[8%] right-[3%] sm:right-[6%] md:right-[10%] z-10">
-          <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/Group_134-1.2e04f3ce.png" className="w-[130px] sm:w-[170px] md:w-[220px] h-auto pointer-events-none" />
-        </FadeIn>
-
-        <div className="relative z-20 flex flex-col items-center max-w-4xl text-center gap-10 sm:gap-14">
-          <FadeIn y={40}>
-            <h2 className="hero-heading font-black uppercase leading-none text-[clamp(3rem,12vw,160px)]">About me</h2>
-          </FadeIn>
-          <p className="text-[#D7E2EA] font-medium leading-relaxed max-w-[560px] text-[clamp(1rem,2vw,1.35rem)]">
-            With more than five years of experience in design, i focus on branding, web design, and user experience, i truly enjoy working with businesses that aim to stand out and present their best image. Let's build something incredible together!
-          </p>
-          <FadeIn y={20} delay={0.2}>
-            <ContactButton className="px-10 py-3.5 sm:px-12 sm:py-4 text-sm sm:text-base" />
-          </FadeIn>
-        </div>
-      </section>
-    );
-
-    // --- 7. Main App ---
-    function App() {
-      return (
-        <main className="w-full relative">
-          <HeroSection />
-          <MarqueeSection />
-          <AboutSection />
-        </main>
-      );
-    }
-
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-  </script>
 </body>
 </html>
