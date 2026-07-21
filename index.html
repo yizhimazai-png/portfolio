@@ -78,36 +78,57 @@
   </div>
 
   <script>
-    // 图片路径配置（已更改为 .jpg 后缀）
     const cleanImgPath = './images/bg-clean.jpg';
     const fullImgPath = './images/bg-full.jpg';
 
     const cleanEl = document.getElementById('bgClean');
     const fullEl = document.getElementById('bgFull');
 
+    // 改进版预加载：完美兼容浏览器缓存与各种网络环境
     function preloadImage(url) {
       return new Promise((resolve) => {
         const img = new Image();
+        
+        // 1. 先绑定事件，再赋值 src（防止缓存秒加载错失 onload 事件）
+        img.onload = () => resolve();
+        img.onerror = () => resolve(); // 即使报错也强行继续，不卡黑屏
+
         img.src = url;
+
+        // 2. 如果浏览器直接命中缓存，complete 属性会为 true
         if (img.complete) {
           resolve();
-        } else {
-          img.onload = resolve;
-          img.onerror = resolve; // 避免加载失败卡死
         }
       });
     }
 
-    // 两张图片完全下载好后，才触发流畅的过渡动画
-    Promise.all([preloadImage(cleanImgPath), preloadImage(fullImgPath)]).then(() => {
+    // 执行动画的主函数
+    function startAnimation() {
       // 1. 显现底层的纯净无字背景
       cleanEl.classList.add('is-loaded');
 
-      // 2. 静止留白 0.8 秒，建立沉浸感
+      // 2. 静止留白 0.8 秒
       setTimeout(() => {
-        // 3. 启动长达 4.5 秒的极慢渐显与模糊散开
+        // 3. 启动 4.5 秒的极慢渐显与模糊散开
         fullEl.classList.add('is-active');
       }, 800);
+    }
+
+    // 预加载逻辑：加上兜底定时器（如果 2 秒内图片还没响应，强行启动动画，绝不留黑屏）
+    let hasStarted = false;
+    const safeTrigger = () => {
+      if (!hasStarted) {
+        hasStarted = true;
+        startAnimation();
+      }
+    };
+
+    // 保险兜底：最长等待 2.5 秒，无论图片加载如何都强行渲染
+    setTimeout(safeTrigger, 2500);
+
+    // 正常图片加载完毕后触发
+    Promise.all([preloadImage(cleanImgPath), preloadImage(fullImgPath)]).then(() => {
+      safeTrigger();
     });
   </script>
 
