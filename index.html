@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MA ZIYU -- Portfolio</title>
-
   <style>
     * {
       box-sizing: border-box;
@@ -27,7 +26,7 @@
       overflow: hidden;
     }
 
-    /* 共同图层样式：绝对定位铺满 */
+    /* 共同图层样式 */
     .bg-layer {
       position: absolute;
       inset: 0;
@@ -42,29 +41,29 @@
     .bg-clean {
       background-image: url('./images/bg-clean.jpg');
       z-index: 1;
+      opacity: 0;
+      transition: opacity 1.2s ease-out;
     }
 
     /* 图二：带文字信息的毛玻璃背景 */
     .bg-full {
       background-image: url('./images/bg-full.jpg');
       z-index: 2;
-      opacity: 0; /* 初始完全透明 */
-      
-      /* 关键动画：以平滑“渐隐/渐现”方式融合 */
-      animation: fadeInTransition 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-      animation-delay: 0.4s; /* 页面加载后稍微停留0.4秒开始变变变 */
+      opacity: 0;
+      filter: blur(12px);
+      /* 4.5秒超长极缓过渡曲线 */
+      transition: opacity 4.5s cubic-bezier(0.16, 1, 0.3, 1), filter 4.5s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, filter;
     }
 
-    /* 渐显动画定义 (Cross-Fade) */
-    @keyframes fadeInTransition {
-      0% {
-        opacity: 0;
-        filter: blur(8px); /* 带有极其微弱的镜头模糊散开感 */
-      }
-      100% {
-        opacity: 1;
-        filter: blur(0px);
-      }
+    /* 加载完成激活类 */
+    .bg-clean.is-loaded {
+      opacity: 1;
+    }
+
+    .bg-full.is-active {
+      opacity: 1;
+      filter: blur(0px);
     }
   </style>
 </head>
@@ -72,11 +71,45 @@
 
   <div class="hero-wrapper">
     <!-- 底层：单纯毛玻璃 -->
-    <div class="bg-layer bg-clean"></div>
+    <div id="bgClean" class="bg-layer bg-clean"></div>
     
-    <!-- 顶层：有信息的毛玻璃（通过透明度渐变浮现） -->
-    <div class="bg-layer bg-full"></div>
+    <!-- 顶层：有信息的毛玻璃 -->
+    <div id="bgFull" class="bg-layer bg-full"></div>
   </div>
+
+  <script>
+    // 图片路径配置（已更改为 .jpg 后缀）
+    const cleanImgPath = './images/bg-clean.jpg';
+    const fullImgPath = './images/bg-full.jpg';
+
+    const cleanEl = document.getElementById('bgClean');
+    const fullEl = document.getElementById('bgFull');
+
+    function preloadImage(url) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = url;
+        if (img.complete) {
+          resolve();
+        } else {
+          img.onload = resolve;
+          img.onerror = resolve; // 避免加载失败卡死
+        }
+      });
+    }
+
+    // 两张图片完全下载好后，才触发流畅的过渡动画
+    Promise.all([preloadImage(cleanImgPath), preloadImage(fullImgPath)]).then(() => {
+      // 1. 显现底层的纯净无字背景
+      cleanEl.classList.add('is-loaded');
+
+      // 2. 静止留白 0.8 秒，建立沉浸感
+      setTimeout(() => {
+        // 3. 启动长达 4.5 秒的极慢渐显与模糊散开
+        fullEl.classList.add('is-active');
+      }, 800);
+    });
+  </script>
 
 </body>
 </html>
