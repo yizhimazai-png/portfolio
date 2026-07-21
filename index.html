@@ -5,11 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MA ZIYU -- Portfolio</title>
 
-  <!-- 引入极简高质感字体 Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-
   <style>
     * {
       box-sizing: border-box;
@@ -21,148 +16,67 @@
       width: 100%;
       height: 100%;
       background-color: #121212;
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-      color: #FFFFFF;
+      overflow: hidden;
     }
 
-    /* 1. 封面容器：使用你上传的 hero-bg.webp 图片 */
-    .hero-container {
+    /* 封面主容器 */
+    .hero-wrapper {
       position: relative;
       width: 100vw;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      /* 这里改成了你上传的图片路径 images/hero-bg.webp */
-      background: #1e1e20 url('./images/hero-bg.webp') center/cover no-repeat;
+      overflow: hidden;
     }
 
-    /* 2. 磨砂玻璃层 */
-    .frosted-glass {
+    /* 共同图层样式：绝对定位铺满 */
+    .bg-layer {
       position: absolute;
       inset: 0;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* 图一：纯净毛玻璃背景 */
+    .bg-clean {
+      background-image: url('./images/bg-clean.jpg');
       z-index: 1;
-      pointer-events: none;
     }
 
-    /* 3. 核心内容区域 */
-    .hero-content {
-      position: relative;
+    /* 图二：带文字信息的毛玻璃背景 */
+    .bg-full {
+      background-image: url('./images/bg-full.jpg');
       z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+      opacity: 0; /* 初始完全透明 */
       
-      /* 初始状态：深陷在雾玻璃背后（高模糊、低透明度、缩小） */
-      opacity: 0;
-      filter: blur(16px);
-      transform: scale(0.96) translateY(10px);
-      
-      /* 关键动画：2秒内缓缓浮现 */
-      animation: emergeFromFrost 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: 0.3s;
+      /* 关键动画：以平滑“渐隐/渐现”方式融合 */
+      animation: fadeInTransition 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      animation-delay: 0.4s; /* 页面加载后稍微停留0.4秒开始变变变 */
     }
 
-    /* 4. “磨砂中浮现”动画定义 */
-    @keyframes emergeFromFrost {
+    /* 渐显动画定义 (Cross-Fade) */
+    @keyframes fadeInTransition {
       0% {
         opacity: 0;
-        filter: blur(16px);
-        transform: scale(0.96) translateY(10px);
+        filter: blur(8px); /* 带有极其微弱的镜头模糊散开感 */
       }
       100% {
         opacity: 1;
         filter: blur(0px);
-        transform: scale(1) translateY(0px);
       }
-    }
-
-    /* 主标题样式：Portfolio | MA ZIYU */
-    .title-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .main-title {
-      font-size: clamp(3.5rem, 8vw, 7rem);
-      font-weight: 300;
-      letter-spacing: -0.02em;
-      color: rgba(255, 255, 255, 0.95);
-      line-height: 1;
-    }
-
-    .divider {
-      width: 2px;
-      height: clamp(3rem, 6vw, 5.5rem);
-      background-color: rgba(255, 255, 255, 0.6);
-    }
-
-    .sub-title {
-      font-size: clamp(1.2rem, 2.5vw, 2.2rem);
-      font-weight: 300;
-      letter-spacing: 0.15em;
-      color: rgba(255, 255, 255, 0.85);
-      text-transform: uppercase;
-      margin-top: 1.8rem;
-    }
-
-    /* 底部邮箱地址 */
-    .email-wrapper {
-      position: absolute;
-      bottom: 40px;
-      z-index: 2;
-      font-size: clamp(0.85rem, 1.2vw, 1.1rem);
-      font-weight: 300;
-      letter-spacing: 0.08em;
-      color: rgba(255, 255, 255, 0.7);
-      
-      /* 邮箱延迟出现 */
-      opacity: 0;
-      filter: blur(10px);
-      animation: emergeFromFrost 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: 1.1s;
-    }
-
-    .email-wrapper a {
-      color: inherit;
-      text-decoration: none;
-      transition: color 0.3s ease, opacity 0.3s ease;
-    }
-
-    .email-wrapper a:hover {
-      color: #ffffff;
-      opacity: 1;
     }
   </style>
 </head>
 <body>
 
-  <!-- 封面主体 Section -->
-  <section class="hero-container">
-    <!-- 磨砂玻璃图层 -->
-    <div class="frosted-glass"></div>
-
-    <!-- 隔着玻璃浮现的主文字内容 -->
-    <div class="hero-content">
-      <div class="title-wrapper">
-        <h1 class="main-title">Portfolio</h1>
-        <div class="divider"></div>
-      </div>
-      <p class="sub-title">MA ZIYU</p>
-    </div>
-
-    <!-- 底部邮箱 -->
-    <div class="email-wrapper">
-      <a href="mailto:maziyumia@foxmail.com">&lt;maziyumia@foxmail.com&gt;</a>
-    </div>
-  </section>
+  <div class="hero-wrapper">
+    <!-- 底层：单纯毛玻璃 -->
+    <div class="bg-layer bg-clean"></div>
+    
+    <!-- 顶层：有信息的毛玻璃（通过透明度渐变浮现） -->
+    <div class="bg-layer bg-full"></div>
+  </div>
 
 </body>
 </html>
