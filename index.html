@@ -5,132 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MA ZIYU -- Portfolio</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body, html {
-      width: 100%;
-      height: 100%;
-      background-color: #121212;
-      overflow: hidden;
-    }
-
-    /* 封面主容器 */
-    .hero-wrapper {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    /* 共同图层样式 */
-    .bg-layer {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    /* 图一：纯净毛玻璃背景 */
-    .bg-clean {
-      background-image: url('./images/bg-clean.jpg');
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 1.2s ease-out;
-    }
-
-    /* 图二：带文字信息的毛玻璃背景 */
-    .bg-full {
-      background-image: url('./images/bg-full.jpg');
-      z-index: 2;
-      opacity: 0;
-      filter: blur(12px);
-      /* 4.5秒超长极缓过渡曲线 */
-      transition: opacity 4.5s cubic-bezier(0.16, 1, 0.3, 1), filter 4.5s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: opacity, filter;
-    }
-
-    /* 加载完成激活类 */
-    .bg-clean.is-loaded {
-      opacity: 1;
-    }
-
-    .bg-full.is-active {
-      opacity: 1;
-      filter: blur(0px);
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html { width: 100%; height: 100%; background-color: #121212; overflow: hidden; }
+    .hero-wrapper { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+    .bg-layer { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; background-repeat: no-repeat; }
+    .bg-clean { background-image: url('./images/bg-clean.jpg'); z-index: 1; opacity: 0; transition: opacity 1.2s ease-out; }
+    .bg-full { background-image: url('./images/bg-full.jpg'); z-index: 2; opacity: 0; filter: blur(12px); transition: opacity 4.5s cubic-bezier(0.16, 1, 0.3, 1), filter 4.5s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, filter; }
+    .bg-clean.is-loaded { opacity: 1; }
+    .bg-full.is-active { opacity: 1; filter: blur(0px); }
+    .project-entry { position: absolute; inset: 0; z-index: 3; cursor: pointer; }
+    .project-entry:focus-visible { outline: 2px solid #fff; outline-offset: -8px; }
   </style>
 </head>
 <body>
-
   <div class="hero-wrapper">
-    <!-- 底层：单纯毛玻璃 -->
     <div id="bgClean" class="bg-layer bg-clean"></div>
-    
-    <!-- 顶层：有信息的毛玻璃 -->
     <div id="bgFull" class="bg-layer bg-full"></div>
+    <a class="project-entry" href="./beauty-system/" aria-label="进入美妆包装交互展示项目"></a>
   </div>
-
   <script>
     const cleanImgPath = './images/bg-clean.jpg';
     const fullImgPath = './images/bg-full.jpg';
-
     const cleanEl = document.getElementById('bgClean');
     const fullEl = document.getElementById('bgFull');
-
-    // 改进版预加载：完美兼容浏览器缓存与各种网络环境
     function preloadImage(url) {
       return new Promise((resolve) => {
         const img = new Image();
-        
-        // 1. 先绑定事件，再赋值 src（防止缓存秒加载错失 onload 事件）
         img.onload = () => resolve();
-        img.onerror = () => resolve(); // 即使报错也强行继续，不卡黑屏
-
+        img.onerror = () => resolve();
         img.src = url;
-
-        // 2. 如果浏览器直接命中缓存，complete 属性会为 true
-        if (img.complete) {
-          resolve();
-        }
+        if (img.complete) resolve();
       });
     }
-
-    // 执行动画的主函数
     function startAnimation() {
-      // 1. 显现底层的纯净无字背景
       cleanEl.classList.add('is-loaded');
-
-      // 2. 静止留白 0.8 秒
-      setTimeout(() => {
-        // 3. 启动 4.5 秒的极慢渐显与模糊散开
-        fullEl.classList.add('is-active');
-      }, 800);
+      setTimeout(() => fullEl.classList.add('is-active'), 800);
     }
-
-    // 预加载逻辑：加上兜底定时器（如果 2 秒内图片还没响应，强行启动动画，绝不留黑屏）
     let hasStarted = false;
     const safeTrigger = () => {
-      if (!hasStarted) {
-        hasStarted = true;
-        startAnimation();
-      }
+      if (!hasStarted) { hasStarted = true; startAnimation(); }
     };
-
-    // 保险兜底：最长等待 2.5 秒，无论图片加载如何都强行渲染
     setTimeout(safeTrigger, 2500);
-
-    // 正常图片加载完毕后触发
-    Promise.all([preloadImage(cleanImgPath), preloadImage(fullImgPath)]).then(() => {
-      safeTrigger();
-    });
+    Promise.all([preloadImage(cleanImgPath), preloadImage(fullImgPath)]).then(safeTrigger);
   </script>
-
 </body>
 </html>
