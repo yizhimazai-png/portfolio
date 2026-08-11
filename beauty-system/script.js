@@ -1,11 +1,12 @@
 const c=PORTFOLIO.beauty,stage=document.querySelector('#stage');
-document.title=c.title;
+if(document.body.dataset.page==='beauty') document.title=c.title;
 ['edition','eyebrow','heading','accent','intro','chapter','chapterTitle','chapterText'].forEach(id=>document.querySelector(`#${id}`).textContent=c[id]);
 c.products.forEach((p,n)=>{
   const button=document.createElement('button');
   button.className='product'; button.ariaLabel=p.name;
   button.style.cssText=`--d:${p.depth};--n:${n}`;
-  button.innerHTML=`<img src="${p.image}" alt=""><span class="fallback"></span><label>${String(n+1).padStart(2,'0')} · ${p.name}</label>`;
+  const image=document.body.dataset.page==='home'?p.image.replace('../',''):p.image;
+  button.innerHTML=`<img src="${image}" alt=""><span class="fallback"></span><label>${String(n+1).padStart(2,'0')} · ${p.name}</label>`;
   button.querySelector('img').onerror=e=>e.currentTarget.hidden=true;
   stage.append(button);
 });

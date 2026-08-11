@@ -4,25 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>MA ZIYU — Portfolio</title>
+  <link rel="stylesheet" href="./beauty-system/style.css">
   <style>
-    *{box-sizing:border-box}html,body{height:100%;margin:0;background:#121212;overflow:hidden}.hero{position:relative;width:100%;height:100%;overflow:hidden}.layer{position:absolute;inset:0;background:center/cover no-repeat;opacity:0}.clean{transition:opacity 1.2s ease}.full{filter:blur(12px);transition:opacity 4.5s cubic-bezier(.16,1,.3,1),filter 4.5s cubic-bezier(.16,1,.3,1)}.ready .clean,.ready .full{opacity:1}.ready .full{filter:none}.entry{position:absolute;inset:0}.entry:focus-visible{outline:2px solid white;outline-offset:-8px}@media(prefers-reduced-motion:reduce){.layer{transition:none}}
+    html{scroll-behavior:smooth}.cover{position:relative;width:100%;height:100svh;overflow:hidden;background:#121212}.layer{position:absolute;inset:0;background:center/cover no-repeat;opacity:0}.clean{transition:opacity 1.2s ease}.full{filter:blur(12px);transition:opacity 4.5s cubic-bezier(.16,1,.3,1),filter 4.5s cubic-bezier(.16,1,.3,1)}.ready .clean,.ready .full{opacity:1}.ready .full{filter:none}.entry{position:absolute;inset:0}.entry:focus-visible{outline:2px solid white;outline-offset:-8px}.project-shell{position:relative}@media(prefers-reduced-motion:reduce){.layer{transition:none}}
   </style>
 </head>
-<body>
-  <main class="hero" id="hero">
+<body data-page="home">
+  <section class="cover" id="cover">
     <div class="layer clean" id="clean"></div>
     <div class="layer full" id="full"></div>
-    <a class="entry" id="entry"></a>
-  </main>
+    <a class="entry" id="entry" href="#project"></a>
+  </section>
+  <div class="project-shell" id="project">
+    <header class="project-header"><a href="#cover">MA ZIYU</a><span id="edition"></span><a href="#cover">↑ TOP</a></header>
+    <main>
+      <section class="hero">
+        <div class="copy"><p class="eyebrow"><b>01</b><span id="eyebrow"></span></p><h1><span id="heading"></span><br><em id="accent"></em></h1><p id="intro"></p></div>
+        <div class="stage" id="stage"><i></i><small>MOVE TO EXPLORE</small></div>
+        <a class="scroll" href="#story">SCROLL TO DISCOVER</a>
+      </section>
+      <section class="story" id="story"><p id="chapter"></p><h2 id="chapterTitle"></h2><div id="chapterText"></div></section>
+    </main>
+  </div>
   <script src="./content.js"></script>
   <script>
-    const c=PORTFOLIO.home,hero=document.querySelector('#hero');
+    const c=PORTFOLIO.home,hero=document.querySelector('#cover');
     document.title=c.title;
     clean.style.backgroundImage=`url('${c.cleanImage}')`;
     full.style.backgroundImage=`url('${c.fullImage}')`;
-    entry.href=c.projectLink; entry.ariaLabel=c.projectLabel;
+    entry.ariaLabel=c.projectLabel;
     Promise.all([c.cleanImage,c.fullImage].map(src=>new Promise(done=>{const i=new Image;i.onload=i.onerror=done;i.src=src}))).then(()=>hero.classList.add('ready'));
     setTimeout(()=>hero.classList.add('ready'),2500);
   </script>
+  <script src="./beauty-system/script.js"></script>
 </body>
 </html>
