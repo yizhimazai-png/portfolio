@@ -1,65 +1,22 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Beauty packaging system — interactive 2.5D product study">
+  <meta name="description" content="Interactive 2.5D beauty packaging study">
   <title>Beauty Packaging System — MA ZIYU</title>
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <main class="site">
-    <header class="topbar">
-      <a class="wordmark" href="../">MA ZIYU</a>
-      <div class="edition">PACKAGING STUDY / 01</div>
-      <a class="back" href="../" aria-label="返回作品集首页">← BACK</a>
-    </header>
-
+  <header><a href="../">MA ZIYU</a><span id="edition"></span><a href="../">← BACK</a></header>
+  <main>
     <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow"><span>01</span> A modular beauty system</p>
-        <h1>Objects in<br><em>gentle motion.</em></h1>
-        <p class="intro">A family of tactile beauty objects, designed to feel intuitive in the hand and quietly distinctive on the shelf.</p>
-      </div>
-
-      <div class="stage" id="productStage" aria-label="Interactive beauty packaging collection">
-        <div class="halo halo-one"></div><div class="halo halo-two"></div>
-        <div class="stage-note">MOVE TO EXPLORE</div>
-
-        <button class="product lipstick product-1" data-depth="1.1" aria-label="Lip Colour">
-          <span class="product-shadow"><img src="./products/lipstick-red-shadow.png" alt=""></span>
-          <span class="float-wrap"><img class="product-art" src="./products/lipstick-red.png" alt=""><span class="object"><span class="cap"></span><span class="body"><span class="brand">MZY</span></span></span></span>
-          <span class="product-label"><b>01</b>Lip Colour</span>
-        </button>
-        <button class="product tube tube-blue product-2" data-depth=".72" aria-label="Soft Touch Tube">
-          <span class="product-shadow"><img src="./products/tube-blue-shadow.png" alt=""></span>
-          <span class="float-wrap"><img class="product-art" src="./products/tube-blue.png" alt=""><span class="object"><span class="cap"></span><span class="body"><span class="brand">MZY</span></span></span></span>
-          <span class="product-label"><b>02</b>Soft Touch Tube</span>
-        </button>
-        <button class="product tube tube-pink product-3" data-depth=".9" aria-label="Soft Touch Tube">
-          <span class="product-shadow"><img src="./products/tube-pink-shadow.png" alt=""></span>
-          <span class="float-wrap"><img class="product-art" src="./products/tube-pink.png" alt=""><span class="object"><span class="cap"></span><span class="body"><span class="brand">MZY</span></span></span></span>
-          <span class="product-label"><b>03</b>Soft Touch Tube</span>
-        </button>
-        <button class="product balm product-4" data-depth="1.28" aria-label="Multi Balm">
-          <span class="product-shadow"><img src="./products/multi-balm-shadow.png" alt=""></span>
-          <span class="float-wrap"><img class="product-art" src="./products/multi-balm.png" alt=""><span class="object"><span class="cap"></span><span class="body"><span class="brand">MZY</span></span></span></span>
-          <span class="product-label"><b>04</b>Multi Balm</span>
-        </button>
-        <button class="product stick product-5" data-depth=".58" aria-label="Precision Stick">
-          <span class="product-shadow"><img src="./products/precision-stick-shadow.png" alt=""></span>
-          <span class="float-wrap"><img class="product-art" src="./products/precision-stick.png" alt=""><span class="object"><span class="cap"></span><span class="body"><span class="brand">MZY</span></span></span></span>
-          <span class="product-label"><b>05</b>Precision Stick</span>
-        </button>
-      </div>
-      <div class="scroll-cue"><span></span>SCROLL TO DISCOVER</div>
+      <div class="copy"><p class="eyebrow"><b>01</b><span id="eyebrow"></span></p><h1><span id="heading"></span><br><em id="accent"></em></h1><p id="intro"></p></div>
+      <div class="stage" id="stage"><i></i><small>MOVE TO EXPLORE</small></div>
+      <a class="scroll" href="#story">SCROLL TO DISCOVER</a>
     </section>
-
-    <section class="next-section">
-      <p>THE SYSTEM</p><h2>One language.<br>Many rituals.</h2>
-      <div class="future-card"><span>NEXT CHAPTER</span><p>Click-to-focus and structure exploration will live here.</p></div>
-    </section>
+    <section class="story" id="story"><p id="chapter"></p><h2 id="chapterTitle"></h2><div id="chapterText"></div></section>
   </main>
-  <script src="./script.js"></script>
+  <script src="../content.js"></script><script src="./script.js"></script>
 </body>
 </html>

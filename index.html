@@ -1,52 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MA ZIYU -- Portfolio</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MA ZIYU — Portfolio</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body, html { width: 100%; height: 100%; background-color: #121212; overflow: hidden; }
-    .hero-wrapper { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
-    .bg-layer { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; background-repeat: no-repeat; }
-    .bg-clean { background-image: url('./images/bg-clean.jpg'); z-index: 1; opacity: 0; transition: opacity 1.2s ease-out; }
-    .bg-full { background-image: url('./images/bg-full.jpg'); z-index: 2; opacity: 0; filter: blur(12px); transition: opacity 4.5s cubic-bezier(0.16, 1, 0.3, 1), filter 4.5s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, filter; }
-    .bg-clean.is-loaded { opacity: 1; }
-    .bg-full.is-active { opacity: 1; filter: blur(0px); }
-    .project-entry { position: absolute; inset: 0; z-index: 3; cursor: pointer; }
-    .project-entry:focus-visible { outline: 2px solid #fff; outline-offset: -8px; }
+    *{box-sizing:border-box}html,body{height:100%;margin:0;background:#121212;overflow:hidden}.hero{position:relative;width:100%;height:100%;overflow:hidden}.layer{position:absolute;inset:0;background:center/cover no-repeat;opacity:0}.clean{transition:opacity 1.2s ease}.full{filter:blur(12px);transition:opacity 4.5s cubic-bezier(.16,1,.3,1),filter 4.5s cubic-bezier(.16,1,.3,1)}.ready .clean,.ready .full{opacity:1}.ready .full{filter:none}.entry{position:absolute;inset:0}.entry:focus-visible{outline:2px solid white;outline-offset:-8px}@media(prefers-reduced-motion:reduce){.layer{transition:none}}
   </style>
 </head>
 <body>
-  <div class="hero-wrapper">
-    <div id="bgClean" class="bg-layer bg-clean"></div>
-    <div id="bgFull" class="bg-layer bg-full"></div>
-    <a class="project-entry" href="./beauty-system/" aria-label="进入美妆包装交互展示项目"></a>
-  </div>
+  <main class="hero" id="hero">
+    <div class="layer clean" id="clean"></div>
+    <div class="layer full" id="full"></div>
+    <a class="entry" id="entry"></a>
+  </main>
+  <script src="./content.js"></script>
   <script>
-    const cleanImgPath = './images/bg-clean.jpg';
-    const fullImgPath = './images/bg-full.jpg';
-    const cleanEl = document.getElementById('bgClean');
-    const fullEl = document.getElementById('bgFull');
-    function preloadImage(url) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve();
-        img.onerror = () => resolve();
-        img.src = url;
-        if (img.complete) resolve();
-      });
-    }
-    function startAnimation() {
-      cleanEl.classList.add('is-loaded');
-      setTimeout(() => fullEl.classList.add('is-active'), 800);
-    }
-    let hasStarted = false;
-    const safeTrigger = () => {
-      if (!hasStarted) { hasStarted = true; startAnimation(); }
-    };
-    setTimeout(safeTrigger, 2500);
-    Promise.all([preloadImage(cleanImgPath), preloadImage(fullImgPath)]).then(safeTrigger);
+    const c=PORTFOLIO.home,hero=document.querySelector('#hero');
+    document.title=c.title;
+    clean.style.backgroundImage=`url('${c.cleanImage}')`;
+    full.style.backgroundImage=`url('${c.fullImage}')`;
+    entry.href=c.projectLink; entry.ariaLabel=c.projectLabel;
+    Promise.all([c.cleanImage,c.fullImage].map(src=>new Promise(done=>{const i=new Image;i.onload=i.onerror=done;i.src=src}))).then(()=>hero.classList.add('ready'));
+    setTimeout(()=>hero.classList.add('ready'),2500);
   </script>
 </body>
 </html>
