@@ -18,7 +18,7 @@ window.PORTFOLIO = {
     chapterText: "One packaging language adapts across colour, care and ritual.",
     products: [
       { name: "Lip Colour", image: "../images/products/lipstick-red.png", depth: 1.1 },
-      { name: "Soft Touch Tube", image: "../images/products/tube-blue.png", depth: 0.72 },
+      { name: "Product Development\n开模与工程开发项目", image: "../images/products/资源 2.png", depth: 0.72 },
       { name: "Soft Touch Tube", image: "../images/products/tube-pink.png", depth: 0.9 },
       { name: "Multi Balm", image: "../images/products/multi-balm.png", depth: 1.28 },
       { name: "Precision Stick", image: "../images/products/precision-stick.png", depth: 0.58 }
